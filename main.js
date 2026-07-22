@@ -88,6 +88,7 @@ const { dareCommand } = require('./commands/dare');
 const { truthCommand } = require('./commands/truth');
 const { clearCommand } = require('./commands/clear');
 const { aliveCommand, communityCommand } = require('./commands/alive');
+const languageCommand = require('./commands/language');
 const blurCommand = require('./commands/img-blur');
 const { welcomeCommand, handleJoinEvent } = require('./commands/welcome');
 const { goodbyeCommand, handleLeaveEvent } = require('./commands/goodbye');
@@ -1046,9 +1047,15 @@ case userMessage.startsWith('$bssensi'):
                 break;
             case userMessage === '$alive':
                 await aliveCommand(sock, chatId, message);
+                commandExecuted = true;
                 break;
             case userMessage === '$community':
                 await communityCommand(sock, chatId, message);
+                commandExecuted = true;
+                break;
+            case userMessage === '$language' || userMessage.startsWith('$language '):
+                await languageCommand(sock, chatId, message, userMessage.slice(9).trim());
+                commandExecuted = true;
                 break;
             case userMessage.startsWith('$mention '):
                 {
