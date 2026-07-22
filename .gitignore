@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# WhatsApp session (contains private auth credentials — never commit)
+session/
+creds.json
+
+# Runtime / temp files
+tmp/
+temp/
+*.pid
+*.log
+
+# Sensitive config
+.env
+
+# Build artifacts / uploads
+zipFile.zip
+*.zip
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Replit cache
+.cache/
