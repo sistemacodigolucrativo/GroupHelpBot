@@ -2,8 +2,8 @@ const settings = {
   packname: 'GroupHelpBot',
   botName: "GroupHelpBot",
   botOwner: 'GroupHelpBot', // Your name
-  ownerNumber: '2348152077346', // Set your number here without + symbol
-  ownerContact: '2348152077346', // Number shown when someone uses $owner command
+  ownerNumber: '5599984843091', // Set your number here without + symbol
+  ownerContact: '5599984843091', // Number shown when someone uses $owner command
   giphyApiKey: 'NrSjG6var2uiuSYDm0xTqCX0xcFgGj4s',
   commandMode: "private",
   maxStoreMessages: 20,
