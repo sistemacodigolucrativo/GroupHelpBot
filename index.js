@@ -295,6 +295,10 @@ async function startXeonBotInc() {
         if (!!global.phoneNumber) {
             // Reuse number from a previous (expired/failed) attempt — no re-prompt needed
             phoneNumber = global.phoneNumber
+        } else if ((process.env.OWNER_NUMBER || '').replace(/\D/g, '')) {
+            // Use OWNER_NUMBER from env — no interactive prompt needed
+            phoneNumber = (process.env.OWNER_NUMBER || '').replace(/\D/g, '')
+            global.phoneNumber = phoneNumber
         } else {
             phoneNumber = await question(chalk.bgBlack(chalk.greenBright(`Please type your WhatsApp number 😍\nFormat: 2347030626048 (without + or spaces) : `)))
             phoneNumber = phoneNumber.replace(/[^0-9]/g, '')
@@ -322,7 +326,8 @@ async function startXeonBotInc() {
             }
         }
 
-        setTimeout(requestNewPairingCode, 3000)
+        // Store for use inside connection.update
+        XeonBotInc._requestPairingCode = requestNewPairingCode
     }
 
     let _startupMsgSent = false; // guard: only send startup/update-done once per process
@@ -331,7 +336,13 @@ async function startXeonBotInc() {
         const { connection, lastDisconnect, qr } = s
 
         if (qr) {
-            console.log(chalk.yellow('📱 QR Code generated. Please scan with WhatsApp.'))
+            // If pairing-code mode, request the code now — the QR event means WhatsApp
+            // server is ready to accept auth, so the WebSocket is stable at this point.
+            if (pairingCode && !XeonBotInc.authState.creds.registered && XeonBotInc._requestPairingCode) {
+                XeonBotInc._requestPairingCode()
+            } else {
+                console.log(chalk.yellow('📱 QR Code generated. Please scan with WhatsApp.'))
+            }
         }
 
         if (connection === 'connecting') {
